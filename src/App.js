@@ -9,10 +9,12 @@ function App() {
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
+    setLink('');
   };
 
   const handleLinkChange = (e) => {
     setLink(e.target.value);
+    setImage(null);
   };
 
   const handleSubmit = async (e) => {
@@ -44,9 +46,9 @@ function App() {
         </div>
         <div className="mb-3">
           <label htmlFor="link" className="form-label">Link:</label>
-          <input type="text" className="form-control" id="link" value={link} onChange={handleLinkChange} />
+          <input type="text" className="form-control" id="link" value={link} onChange={handleLinkChange} disabled={image !== null} />
         </div>
-        <button type="submit" className="btn btn-primary">Submit</button>
+        <button type="submit" className="btn btn-primary" disabled={!image && !link}>Submit</button>
       </form>
 
       {response && (
