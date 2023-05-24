@@ -42,7 +42,7 @@ function App() {
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">Image:</label>
-          <input type="file" className="form-control" id="image" accept="image/*" onChange={handleImageChange} />
+          <input type="file" className="form-control" id="image" accept="image/*" onChange={handleImageChange} disabled={link !== ''} />
         </div>
         <div className="mb-3">
           <label htmlFor="link" className="form-label">Link:</label>
