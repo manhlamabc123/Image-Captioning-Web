@@ -5,17 +5,19 @@ import 'bootstrap/dist/css/bootstrap.min.css';
 function App() {
   const [image, setImage] = useState(null);
   const [link, setLink] = useState('');
-  const [response, setResponse] = useState(null);
+  const [displayImage, setDisplayImage] = useState(null);
   const fileInputRef = useRef(null);
 
   const handleImageChange = (e) => {
     setImage(e.target.files[0]);
     setLink('');
+    setDisplayImage(URL.createObjectURL(e.target.files[0]));
   };
 
   const handleLinkChange = (e) => {
     setLink(e.target.value);
     setImage(null);
+    setDisplayImage(e.target.value);
   };
 
   const handleSubmit = async (e) => {
@@ -31,7 +33,8 @@ function App() {
           'Content-Type': 'multipart/form-data'
         }
       });
-      setResponse(response.data);
+      // You can update the display logic based on the response if needed
+      setDisplayImage(response.data.imageUrl);
     } catch (error) {
       console.error(error);
     }
@@ -39,6 +42,8 @@ function App() {
 
   const handleRemoveImage = () => {
     setImage(null);
+    setLink('');
+    setDisplayImage(null);
     if (fileInputRef.current) {
       fileInputRef.current.value = null;
     }
@@ -46,7 +51,7 @@ function App() {
 
   return (
     <div className="container">
-      <h1 className="my-4">Image Captioning</h1>
+      <h1 className="my-4">Image Uploader</h1>
       <form onSubmit={handleSubmit}>
         <div className="mb-3">
           <label htmlFor="image" className="form-label">Image:</label>
@@ -80,10 +85,14 @@ function App() {
         </button>
       </form>
 
-      {response && (
+      {displayImage && (
         <div className="mt-4">
-          <h2 className="mb-3">Caption: {response.caption}</h2>
-          <img src={response.imageUrl} alt="Uploaded" className="img-fluid" />
+          <h2 className="mb-3">Uploaded Image:</h2>
+          {image ? (
+            <img src={displayImage} alt="Uploaded" className="img-fluid" />
+          ) : (
+            <img src={displayImage} alt="Linked" className="img-fluid" />
+          )}
         </div>
       )}
     </div>
